@@ -1,4 +1,4 @@
-const JWT_SECRET = require('../secrets')
+const { JWT_SECRET } = require('../secrets')
 const jwt = require('jsonwebtoken')
 
 module.exports = function generateToken(user) {

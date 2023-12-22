@@ -1,3 +1,10 @@
+const JWT_SECRET = process.env.JWT_SECRET || 'shh'
+
+const PASSWORD = '1234'
+
+
+
 module.exports = {
-  JWT_SECRET: process.env.JWT_SECRET || '1234'
+  JWT_SECRET,
+  PASSWORD,
 }

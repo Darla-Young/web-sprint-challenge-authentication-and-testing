@@ -2,7 +2,7 @@ const router = require('express').Router()
 const { addUser } = require('./auth-model')
 const { validateReq } = require('../middleware/mw')
 const bcrypt = require('bcryptjs')
-const { generateToken } = require('./generate-token')
+const generateToken = require('./generate-token')
 
 router.post('/register', validateReq, (req, res, next) => {
   const user = req.body
@@ -15,14 +15,12 @@ router.post('/register', validateReq, (req, res, next) => {
 });
 
 router.post('/login', validateReq, (req, res) => {
-  if (bcrypt.compareSync(req.body.password, req.body.hash)) {
-    const token = generateToken(req.body)
+  const token = generateToken(req.body)
 
-    res.json({
-      message: `welcome, ${req.body.username}`,
-      token
-    })
-  }
+  res.json({
+    message: `welcome, ${req.body.username}`,
+    token
+  })
 });
 
 module.exports = router;

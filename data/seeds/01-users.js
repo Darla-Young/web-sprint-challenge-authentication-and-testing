@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
-const { JWT_SECRET } = require('../../api/secrets')
+const { PASSWORD } = require('../../api/secrets')
 
-const hash = bcrypt.hashSync(JWT_SECRET, 8)
+const hash = bcrypt.hashSync(PASSWORD, 8)
 
 const users = [
   {username: 'bob', password: hash}

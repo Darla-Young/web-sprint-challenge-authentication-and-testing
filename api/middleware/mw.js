@@ -1,4 +1,5 @@
 const { findUser } = require('../auth/auth-model')
+const bcrypt = require('bcryptjs')
 
 async function validateReq (req, res, next) {
   const { username, password } = req.body
@@ -7,14 +8,20 @@ async function validateReq (req, res, next) {
     res.status(400).json({message: 'username and password required'})
   }
   else {
-    const check = await findUser(username)
-    if (req.originalUrl === '/api/auth/login' && !check.password) {
-      res.status(401).json({message: 'invalid credentials'})
+    const user = await findUser(username)
+
+    if (req.originalUrl === '/api/auth/login') {
+      const credentials = {
+        username: username,
+        password: password
+      }
+      if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
+        return res.status(401).json({message: 'invalid credentials'})
+      }
+      else next()
     }
-    else if (req.originalUrl === '/api/auth/register' && check.username) {
-      res.status(409).json({message: 'username taken'})
-    }
-    else next()
+    else if (req.originalUrl === '/api/auth/register' && !user) next()
+    else res.status(409).json({message: 'username taken'})
   }
 }
 
